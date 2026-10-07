@@ -285,7 +285,7 @@ int roundEvenPow2(int x, int n) {
   int mask = pow2n + ~0; // 2^n - 1
   int q = x >> n; // 原始商
   int r = x & mask; // 余数
-  int q_rounded = (x + half) >> n; // 先加 half 再右移，常规四舍五入
+  int q_rounded = (x + half) >> n; // 先加half再右移，常规四舍五入
   int special = !(r ^ half) & !(q & 0x01); // 恰好中点且商为偶数时需要调整
   q_rounded = q_rounded + (~special + 1);
   return q_rounded << n;
@@ -377,21 +377,21 @@ int mul5Sat(int x) {
  *   Rating: 7
  */
 int classifyAdd3(int x, int y, int z) {
-  // 低 32 位相加，并计算每一步的无符号进位
+  // 低32位相加，并计算每一步的无符号进位
   int s1 = x + y;
   int c1 = (((x & y) | ((x | y) & ~s1)) >> 31) & 0x01; //两个数在某一位上都是1，或至少有一个1但和是0（说明这一位一定接收了来自低位的进位）
   int s2 = s1 + z;
   int c2 = (((s1 & z) | ((s1 | z) & ~s2)) >> 31) & 0x01;
   int carry = c1 + c2;
 
-  int sign_low = s2 >> 31; // 低 32 位的符号扩展
+  int sign_low = s2 >> 31; // 低32位的符号扩展
 
-  // 各数的高 32 位（符号扩展）
+  // 各数的高32位（符号扩展）
   int sign_x = x >> 31;
   int sign_y = y >> 31;
   int sign_z = z >> 31;
 
-  // 高 32 位之和
+  // 高32位之和
   int sum_high = sign_x + sign_y + sign_z + carry;
 
   int eq = !(sum_high ^ sign_low);
